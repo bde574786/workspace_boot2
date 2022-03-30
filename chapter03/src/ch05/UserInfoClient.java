@@ -3,32 +3,58 @@ package ch05;
 import java.util.Scanner;
 
 public class UserInfoClient {
-	
+
 	public static final String MYSQL = "mysql";
 	public static final String ORACLE = "oracle";
 
 	public static void main(String[] args) {
 		
-		String id;
-		String password;
-		String name;
-		
+	
 		// UserInfo 스캐너로 받아서 흐름 만들어 주세요
 		// 사용자한테 userInfo 정보 받는다.
+		Scanner sc1 = new Scanner(System.in);
+		Scanner sc2 = new Scanner(System.in);
+		
 		UserInfo info = new UserInfo();
-		Scanner sc = new Scanner(System.in);
 		
 		System.out.println("아이디를 입력해주세요");
-		id = sc.nextLine();
-		info.setUserId(id);
+		info.setUserId(sc1.nextLine());
 		
 		System.out.println("비밀번호를 입력해주세요");
-		password = sc.nextLine();
-		info.setPassword(password);
+		info.setPassword(sc1.nextLine());
 		
 		System.out.println("이름을 입력해주세요");
-		name = sc.nextLine();
-		info.setUserName(name);
+		info.setUserName(sc1.nextLine());
+		
+		
+		System.out.println("수정할 아이디를 입력하세요");
+		if(sc1.nextLine().equals(info.getUserId())) {
+			System.out.println("수정 옵션을 선택하세요\n1. 이름\t2. 비밀번호");
+			String temp;
+			if(sc1.nextInt() == 1) {
+				System.out.println("이름을 수정합니다");
+				System.out.println("수정할 이름을 입력하세요 : ");
+				temp = sc2.nextLine();
+				info.setUserName(temp);
+			}else if(sc2.nextInt() == 2) {
+				System.out.println("비밀번호를 수정합니다");
+				System.out.println("수정할 비밀번호를 입력하세요 : ");
+				info.setPassword(sc2.nextLine());
+			}else {
+				System.out.println("잘못 입력하셨습니다.");
+			}
+			
+		}else {
+			System.out.println("아이디를 찾을 수 없습니다.");
+		}
+	
+		
+		
+		
+		
+		
+		
+		
 		
 //		info.setUserId("abc");
 //		info.setPassword("1234");
@@ -62,20 +88,20 @@ public class UserInfoClient {
 		// 단, 다형성을 사용해서 처리 해 주세요
 
 		// 널포인터 예외 뜨므로 null로 초기화
-		UserInfoDao userInfoDao = null;
-		String str = "mysql";
-		
-		if (MYSQL.equals(str)) {
-			userInfoDao = new UserInfoMySqlDao();
-		} else if(ORACLE.equals(str)) {
-			userInfoDao = new UserInfoOracleDao();
-		} else {
-			System.out.println("잘못된 입력입니다.");
-		}
-	
-		// null 값이 들어갈 수 있으므로 방어적 코드 작성
-		if(userInfoDao != null) {
-			userInfoDao.insertUserInfo(info);
-		}
-	}	
+//		UserInfoDao userInfoDao = null;
+//		String str = "mysql";
+//		
+//		if (MYSQL.equals(str)) {
+//			userInfoDao = new UserInfoMySqlDao();
+//		} else if(ORACLE.equals(str)) {
+//			userInfoDao = new UserInfoOracleDao();
+//		} else {
+//			System.out.println("잘못된 입력입니다.");
+//		}
+//	
+//		// null 값이 들어갈 수 있으므로 방어적 코드 작성
+//		if(userInfoDao != null) {
+//			userInfoDao.insertUserInfo(info);
+//		}
+	}
 }
