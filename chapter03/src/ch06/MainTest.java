@@ -30,12 +30,18 @@ public class MainTest {
 //			System.out.println("다른 책 입니다.");
 //		}
 		
-		if(book1.equals(student)) {
-			System.out.println("true 리턴");
-		} else {
-			System.out.println("false 리턴.");
-		}
+//		if(book1.equals(student)) {
+//			System.out.println("true 리턴");
+//		} else {
+//			System.out.println("false 리턴.");
+//		}
+//		
 		
+		if(book1.isSameBook(book3)) {
+			System.out.println("같은 책 입니다.");
+		}else {
+			System.out.println("다른 책 입니다");
+		}
 		
 	}
 
