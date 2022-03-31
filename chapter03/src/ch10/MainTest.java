@@ -4,11 +4,12 @@ public class MainTest {
 
 	public static void main(String[] args) {
 
-		Book book = new Book();
+		Book book = new Book(1, "홍길동전", "홍길동전");
 		BookClient bookClient = new BookClient();
 		// 기능이 완성 되었다면
 		bookClient.createdBookObj();
-		bookClient.deleteBook("홍길동전");
+		bookClient.showBookInfo(0);
+//		bookClient.deleteBook("홍길동전");
 		
 		BookDaoMySql bookDaoMySql = new BookDaoMySql();
 		bookDaoMySql.addBook(book);

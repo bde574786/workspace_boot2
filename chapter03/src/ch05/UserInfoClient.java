@@ -9,7 +9,8 @@ public class UserInfoClient {
 
 	public static void main(String[] args) {
 		
-	
+	// 
+		
 		// UserInfo 스캐너로 받아서 흐름 만들어 주세요
 		// 사용자한테 userInfo 정보 받는다.
 		Scanner sc1 = new Scanner(System.in);

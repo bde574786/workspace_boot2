@@ -1,0 +1,10 @@
+DBTYPE=ORACLE
+
+
+java.io.FileNotFoundException: b.txt (지정된 파일을 찾을 수 없습니다)
+	at java.base/java.io.FileInputStream.open0(Native Method)
+	at java.base/java.io.FileInputStream.open(FileInputStream.java:219)
+	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:157)
+	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:112)
+	at ch12.MyException.readFile(MyException.java:19)
+	at ch12.MyException.main(MyException.java:33)
