@@ -6,6 +6,19 @@ public class BookArrayList implements BookService {
 
 	private ArrayList<Book> books = new ArrayList<Book>();
 	
+	
+	
+	
+	public BookArrayList() {
+		Book boo1 = new Book(1, "홍길동전1", "a");
+		Book boo2 = new Book(2, "홍길동전2", "b");
+		Book boo3 = new Book(3, "홍길동전3", "c");
+		Book boo4 = new Book(4, "홍길동전4", "d");
+		Book boo5 = new Book(5, "홍길동전5", "e");
+		BookClient.serialBookNumber = 5;
+				
+	}
+
 	/**
 	 * Book 객체를 ArrayList 자료구조에 저장하기
 	 */

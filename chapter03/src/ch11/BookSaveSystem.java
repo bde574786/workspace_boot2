@@ -2,7 +2,7 @@ package ch11;
 
 import java.util.Scanner;
 
-public class MainTest {
+public class BookSaveSystem {
 
 	public static void main(String[] args) {
 
