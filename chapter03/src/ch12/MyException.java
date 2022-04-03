@@ -28,7 +28,7 @@ public class MyException {
 	public static void main(String[] args) {
 		
 		String dbType = null;
-		MyException my = new MyException("b.txt");
+		MyException my = new MyException("a.txt");
 		
 		try {
 			dbType = my.readFile();
