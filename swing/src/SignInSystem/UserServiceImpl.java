@@ -193,7 +193,6 @@ public class UserServiceImpl implements UserService {
 				}
 			}
 			System.out.println("비밀번호가 일치하지 않습니다.");
-			flag = goBack();
 		}
 
 	}
@@ -201,11 +200,11 @@ public class UserServiceImpl implements UserService {
 	// 관리자
 	public void logInManager() {
 		Scanner sc = new Scanner(System.in);
-		final String ID = "1";
-		final String PASSWORD = "2";
+		final String ID = "admin";
+		final String PASSWORD = "1234";
 		while (true) {
 			System.out.println("관리자로 로그인 합니다");
-			System.out.println("id : 1, password : 2");
+			System.out.println("id : admin, password : 1234");
 			System.out.print("관리자 아이디를 입력하세요\n>>> ");
 			String id = sc.nextLine();
 			System.out.print("관리자 비밀번호를 입력하세요\n>>> ");
@@ -251,7 +250,7 @@ public class UserServiceImpl implements UserService {
 			if (choice.equals("1")) {
 				System.out.println("회원정보를 조회합니다.");
 				showUserInfo();
-				flag = goBack();
+//				flag = goBack();
 			} else if (choice.equals("2")) {
 				System.out.println("비밀번호를 수정합니다.");
 				updateUser();
