@@ -70,10 +70,14 @@ public class MyImageFrame2 extends JFrame {
 	// 메인 함수
 	public static void main(String[] args) {
 		new MyImageFrame2();
+		
+		
+	} // end of main
+	
+	
+	public void addEventListner() {
+		System.out.println("브랜치를 만들었습니다.");
 	}
-	
-	
-	
 	
 } // end of outter class
 
