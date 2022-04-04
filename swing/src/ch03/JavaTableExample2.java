@@ -1,6 +1,13 @@
 package ch03;
 
+import java.awt.BorderLayout;
+import java.awt.event.ActionListener;
+import java.awt.print.PrinterException;
+
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 public class JavaTableExample2 {
 
@@ -28,8 +35,26 @@ public class JavaTableExample2 {
 				{"Vaibhav", "44" , "Engineer"},
 				};
 		
+		
 		final Object h[] = {"Name", "Age" ,"Occupation"};
 		JFrame fr = new JFrame("Printing table");
+		fr.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		final JTable tb = new JTable(r, h);
+		JScrollPane sp = new JScrollPane(tb);
+		fr.add(sp, BorderLayout.CENTER);
+		JButton button = new JButton("click this button to Print");
+		ActionListener act = new ActionLisnter() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					tb.print();
+				}catch(PrinterException pe){
+					Syste.err.println("Error printing:" + pe.getMessage())
+				}
+			}
+		
+		
+	
+	
 	}
 	
 	
