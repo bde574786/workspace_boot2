@@ -49,7 +49,7 @@ public class MyImageFrame1 extends JFrame {
 		@Override
 		public void paint(Graphics g) {
 			super.paint(g);
-			g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+			
 		}
 		
 		

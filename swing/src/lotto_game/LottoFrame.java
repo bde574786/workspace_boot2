@@ -40,8 +40,8 @@ public class LottoFrame extends JFrame implements ActionListener {
 		// paint 다시 실행
 		repaint();
 		
-		
 	}
+
 
 	@Override
 	public void paint(Graphics g) {
