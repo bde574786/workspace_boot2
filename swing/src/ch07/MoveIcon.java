@@ -18,7 +18,7 @@ public class MoveIcon extends JFrame implements KeyListener{
 	private ImagePanel imagePanel;
 	
 	private String bgImageFileName = "image1.jpg";
-	private String imageIconFileName= "icon2.png";
+	private String imageIconFileName= "icon4.png";
 	int xPoint = 200;
 	int yPoint = 200;
 	// 내부 클래스

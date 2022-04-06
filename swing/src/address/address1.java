@@ -15,7 +15,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 
-public class address extends JFrame {
+public class address1 extends JFrame {
 
 	JTable jt;
 
@@ -38,7 +38,7 @@ public class address extends JFrame {
 
 	private JScrollPane jsp;
 
-	public address() {
+	public address1() {
 
 		setTitle("주소록 메인");
 		setSize(400, 500);
@@ -115,7 +115,7 @@ public class address extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		new address();
+		new address1();
 	}
 
 }
