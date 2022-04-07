@@ -1,4 +1,4 @@
-package thread_ex;
+package minigame;
 
 import java.awt.BorderLayout;
 import java.awt.Graphics;

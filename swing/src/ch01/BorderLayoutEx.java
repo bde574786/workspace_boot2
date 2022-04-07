@@ -44,4 +44,9 @@ public class BorderLayoutEx extends JFrame {
 		this.add(button3, BorderLayout.CENTER);
 	}
 
+	public static void main(String[] args) {
+		
+		new BorderLayoutEx();
+	}
+	
 }
