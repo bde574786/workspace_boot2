@@ -13,6 +13,8 @@ public class Bubble extends JLabel implements Moveable {
 
 	// 2단계
 	private Bubble bubbleContext = this;
+	private BubbleFrame mContext;
+	
 	// 포함관계
 	// 의존성 컴포지션
 	private Player player;
@@ -37,6 +39,13 @@ public class Bubble extends JLabel implements Moveable {
 
 
 	// 의존 주입 --> 생성자의 주입을 받는다.
+//	public Bubble(Player player) {
+//		this.player = player;
+//		initObject();
+//		initSetting();
+//		initThread();
+//	}
+	
 	public Bubble(Player player) {
 		this.player = player;
 		initObject();

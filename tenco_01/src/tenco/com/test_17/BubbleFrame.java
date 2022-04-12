@@ -14,8 +14,9 @@ import lombok.Data;
 public class BubbleFrame extends JFrame {
 
 
+	
 	private JLabel backgroundMap;
-	private Player player;
+	public Player player;
 
 	public BubbleFrame() {
 		initObject();
@@ -27,7 +28,8 @@ public class BubbleFrame extends JFrame {
 
 	private void initObject() {
 		// 예외처리를 하지 않아도 되지만 디버깅하기 어려움
-		backgroundMap = new JLabel(new ImageIcon("images/backgroundMap.png"));
+		backgroundMap = new JLabel(new ImageIcon("images/marioBackgroundMap.gif"));
+		backgroundMap.setSize(2000, 640);
 		this.setContentPane(backgroundMap);
 
 		player = new Player();

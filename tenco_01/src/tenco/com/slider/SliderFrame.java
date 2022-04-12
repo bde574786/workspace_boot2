@@ -21,9 +21,10 @@ public class SliderFrame extends JFrame {
 	}
 
 	private void initObject() {
-		bgMap = new JLabel(new ImageIcon("images/backgroundMap.png"));
+		
+		bgMap = new JLabel(new ImageIcon("images/marioBackgroundMap.gif"));
 
-		setSize(400, 400);
+		setSize(2500, 1100);
 		setVisible(true);
 		setResizable(true);
 		setLocationRelativeTo(this);
@@ -40,17 +41,17 @@ public class SliderFrame extends JFrame {
 			public void keyPressed(KeyEvent e) {
 				int keyCode = e.getKeyCode();
 				switch (keyCode) {
-				case KeyEvent.VK_RIGHT:
-
+				case KeyEvent.VK_LEFT:
+					System.out.println("왼쪽 방향키 눌림");
 					new Thread(new Runnable() {
 						@Override
 						public void run() {
 
-							for (int i = 0; i < 100; i++) {
+							for (int i = 0; i < 50; i++) {
 								bgMap.setLocation(pointX, pointY);
 								pointX++;
 								try {
-									Thread.sleep(3);
+									Thread.sleep(10);
 								} catch (InterruptedException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
@@ -60,6 +61,27 @@ public class SliderFrame extends JFrame {
 					}).start();
 					break;
 
+				case KeyEvent.VK_RIGHT:
+					System.out.println("오른쪽 방향키 눌림");
+					new Thread(new Runnable() {
+
+						@Override
+						public void run() {
+
+							for (int i = 0; i < 50; i++) {
+								bgMap.setLocation(pointX, pointY);
+								pointX--;
+								try {
+									Thread.sleep(10);
+								} catch (InterruptedException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+							}
+
+						}
+					}).start();
+
 				default:
 					break;
 				}
@@ -68,10 +90,9 @@ public class SliderFrame extends JFrame {
 		});
 
 	}
-	
+
 	public static void main(String[] args) {
 		new SliderFrame();
 	}
-	
-	
+
 } // end of class
