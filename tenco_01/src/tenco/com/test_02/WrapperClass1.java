@@ -14,6 +14,7 @@ public class WrapperClass1 {
 		Integer num1 = 200; // 자동 박싱 ( new Integer(200) )
 		int num10 = num1; // 자동 언박싱( num1.intValue() )
 		
+		
 	}
 	
 	
