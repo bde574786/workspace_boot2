@@ -1,4 +1,4 @@
-package tenco.com.slider;
+package tenco.com.slider; //
 
 public class MainTest {
 
