@@ -70,8 +70,7 @@ public class MyMiniGame extends JFrame {
 		bottomPanel.setLayout(new GridLayout(1, 2));
 		bottomPanel.add(moveButton);
 		bottomPanel.add(stopButton);
-//		moveButton.addActionListener(moveAction);
-//		stopButton.addActionListener(stopAction);
+		
 	}
 
 	public void addEventListener() {
