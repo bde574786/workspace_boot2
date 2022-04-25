@@ -1,5 +1,6 @@
 package ch00;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -17,18 +18,16 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-public class ServerFile extends BaseFile {
+public class ServerFile extends JFrame {
 
-	
-	
 	JFrame frame;
 	JLabel label;
 	JScrollPane scrollbar;
 	JTextArea textArea;
 	JTextField textField;
 	JButton startBtn;
-	
-	
+	JPanel panel;
+
 	private ServerSocket serverSocket;
 	private Socket socket;
 
@@ -42,49 +41,35 @@ public class ServerFile extends BaseFile {
 	private final int PORT = 10001;
 
 	public ServerFile() {
-		super();
 		initData();
-		addListener();
-//		connect();
 		startServer();
-//		receiveMsgFromClient();
-//		saveMsg();
 	}
 
-	@Override
-	protected void initData() {
-		super.initData();
+	private void initData() {
+		setVisible(true);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		this.setLocationRelativeTo(null);
 		
-//		
-//		frame = new JFrame();
-//		frame.setLayout(null);
-//		frame.setSize(400, 300);
-//		
-//		panel = new JPanel();
-//		panel.setLayout(null);
-//		panel.setBackground(Color.LIGHT_GRAY);
-//		
-//		label = new JLabel("포트 번호");
-//		label.setBounds(100, 100, 50, 50);
-//		add(label);
-//		
-//		jScrollPane = new JScrollPane(label);
-////		jScrollPane.setBounds(0, 0, 160, 160);
-//
-//		frame.add(jScrollPane);
-//		
-		
-		
-		
-				
-		setBounds(0, 100, 290, 360);
+		frame = new JFrame();
+		frame.setLayout(null);
+		frame.setSize(400, 300);
+
 		panel = new JPanel();
-		this.add(panel);
 		panel.setLayout(null);
 
-		
-		scrollbar = new JScrollPane();
-				
+		label = new JLabel("포트 번호");
+		label.setBounds(100, 100, 50, 50);
+		add(label);
+
+		scrollbar = new JScrollPane(label);
+		scrollbar.setBounds(0, 0, 160, 160);
+		frame.add(scrollbar);
+
+		setBounds(0, 100, 290, 360);
+		panel = new JPanel();
+		panel.setLayout(null);
+		this.add(panel);
+
 		textArea = new JTextArea();
 		scrollbar.setBounds(10, 10, 250, 250);
 		panel.add(scrollbar);
@@ -98,49 +83,12 @@ public class ServerFile extends BaseFile {
 		JButton startBtn = new JButton("실행");
 		startBtn.setBounds(180, 270, 79, 35);
 		panel.add(startBtn);
+
 		
 		
 	}
-
-	private void addListener() {
-//		saveBtn.addActionListener(this);
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == saveBtn) {
-			System.out.println("저장되었습니다");
-
-		}
-	}
-
-//	private void receiveMsgFromClient() {
-//		try {
-//			bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-//
-//			Thread thread = new Thread(new WriteThread());
-//			thread.start();
-//
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//
-//	}
-//	
-//	private void saveMsg() {
-//		while (true) {
-//			String msg;
-//			try {
-//				msg = bufferedReader.readLine();
-//				System.out.println("4. 클라이언트로 받은 메시지 : " + msg);
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//	}
 
 	private void startServer() {
-
 		try {
 			serverSocket = new ServerSocket(PORT);
 			System.out.println("클라이언트 대기 중");
@@ -157,12 +105,12 @@ public class ServerFile extends BaseFile {
 			Thread thread = new Thread(writeThread);
 			thread.start();
 
-			
 			while (mainFlag) {
 				String msg = bufferedReader.readLine();
-				System.out.println("4. 클라이언트로 받은 메시지 : " + msg);
+				System.out.println("클라이언트로부터 메세지가 도착했습니다" + msg);
 			}
 
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.out.println("예외 발생 : " + e.getMessage());
@@ -171,64 +119,7 @@ public class ServerFile extends BaseFile {
 
 	}
 
-//	private void connect() {
-//		new Thread(new Runnable() {
-//			@Override
-//			public void run() {
-//				while (true) {
-//					try {
-//						serverSocket = new ServerSocket(PORT);
-//						System.out.println("클라이언트 대기 중");
-//						socket = serverSocket.accept();
-//						System.out.println("연결완료");
-//					} catch (IOException e) {
-//						System.out.println("잘못 입력하였습니다");
-//						e.printStackTrace();
-//					}
-//
-//				}
-//			}
-//		}).start();
-//	}
-
-//	private void msgToClient() {
-//		keyboardBufferedReader = new BufferedReader(new InputStreamReader(System.in));
-//		try {
-//			bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} 
-//	}
-
-//			
-//		System.out.println("서버 소켓 생성");
-//		
-//		socket = serverSocket.accept();
-//		System.out.println("연결");
-//		
-//		bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-//
-//		// 초기화 처리
-//		keyboardBufferedReader = new BufferedReader(new InputStreamReader(System.in));
-//		// 클라이언트에게 보낼 스트림 연결 (outputStream)
-//		bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-//		
-//		Thread thread = new Thread(new WriteThread());
-//		thread.start();
-//		
-//		while(true) {
-//			 String msg = bufferedReader.readLine();
-//			 System.out.println("클라이언트로 받은 메시지 : " + msg);
-//		}
-//		
-//		
-//	} catch (IOException e) {
-//		e.printStackTrace();
-//	}
-
 	private class WriteThread implements Runnable {
-
 		@Override
 		public void run() {
 			while (threadFlag) {
@@ -241,9 +132,7 @@ public class ServerFile extends BaseFile {
 					threadFlag = false;
 				}
 			}
-
 		}
-
 	}
 
 	public static void main(String[] args) {
