@@ -1,12 +1,16 @@
-package ch00;
+package test;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileWriter;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Vector;
@@ -20,11 +24,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 
-
 public class ServerFile extends JFrame implements ActionListener {
 
-	ServerFile mContext = this;
-	
 	JFrame frame;
 	JLabel label;
 	JScrollPane scrollbar;
@@ -41,8 +42,8 @@ public class ServerFile extends JFrame implements ActionListener {
 	private BufferedWriter bufferedWriter;
 	private BufferedReader keyboardBufferedReader;
 
-	private Vector<UserSocket> userInfo = new Vector();
-//	private Vector<RoomInfomation> roomInfo = new Vector();
+	private Vector<UserInfomation> userInfo = new Vector();
+	private Vector<RoomInfomation> roomInfo = new Vector();
 
 	boolean mainFlag;
 	boolean threadFlag;
@@ -51,10 +52,10 @@ public class ServerFile extends JFrame implements ActionListener {
 
 	public ServerFile() {
 		System.out.println("서버");
+		System.out.println("민슈화이탱!!><");
 		initData();
 		startServer();
 		addEventListener();
-		saveLog();
 	}
 
 	private void initData() {
@@ -117,12 +118,15 @@ public class ServerFile extends JFrame implements ActionListener {
 	}
 
 	private void startServer() {
+		mainFlag = true;
+		threadFlag = true;
 		try {
 			serverSocket = new ServerSocket(PORT);
 			connect();
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.out.println("예외 발생 : " + e.getMessage());
+			mainFlag = false;
 		}
 
 	}
@@ -136,10 +140,29 @@ public class ServerFile extends JFrame implements ActionListener {
 						System.out.println("클라이언트 대기 중");
 						socket = serverSocket.accept();
 						
-						UserSocket userSocket = new UserSocket(mContext, socket);
-						userSocket.start();
-						userInfo.add(userSocket);
+						UserInfomation user = new UserInfomation(socket);
+						user.start();
 						
+						System.out.println("234");
+						
+						
+						
+						bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+						keyboardBufferedReader = new BufferedReader(new InputStreamReader(System.in));
+						bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+
+						WriteThread writeThread = new WriteThread();
+						Thread thread = new Thread(writeThread);
+						thread.start();
+
+						
+						while (mainFlag) {
+							String msg = bufferedReader.readLine();
+							System.out.println("클라이언트로부터 메세지가 도착했습니다\n" + msg);
+						}
+						
+
+
 						
 					} catch (IOException e) {
 						e.printStackTrace();
@@ -152,82 +175,90 @@ public class ServerFile extends JFrame implements ActionListener {
 
 	}
 
-	
-//	private class WriteThread implements Runnable {
-//		@Override
-//		public void run() {
-//			while (threadFlag) {
-//				try {
-//					String msg = keyboardBufferedReader.readLine();
-//					bufferedWriter.write(msg + '\n');
-//					bufferedWriter.flush();
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//					threadFlag = false;
-//				}
-//			}
-//		}
-//	}
+	private class WriteThread implements Runnable {
+		@Override
+		public void run() {
+			while (threadFlag) {
+				try {
+					String msg = keyboardBufferedReader.readLine();
+					bufferedWriter.write(msg + '\n');
+					bufferedWriter.flush();
+				} catch (IOException e) {
+					e.printStackTrace();
+					threadFlag = false;
+				}
+			}
+		}
+	}
 
-	
+	class UserInfomation extends Thread {
 
-	public void broadcast(String msg) {
+		private DataInputStream dis;
+		private DataOutputStream dos;
+		private Socket userSocket;
+		private String data;
 		
-		for(int i = 0; i < userInfo.size(); i++) {
-			userInfo.get(i).sendMessage(msg);
-		}
-	}
-	
-	
-	public void sendMessage(String msg) {
-		try {
-			bufferedWriter.write(msg + '\n');
-			bufferedWriter.flush();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
+		public UserInfomation(Socket sc) {
+			this.userSocket = sc;
 
-	public void saveLog() {
-		try {
-			BufferedWriter bw = new BufferedWriter(new FileWriter("log.txt", true));
-			for (int i = 0; i < userInfo.size(); i++) {
-				bufferedReader = new BufferedReader(new InputStreamReader());
+			try {
+				dis = new DataInputStream(userSocket.getInputStream());
+				dos = new DataOutputStream(userSocket.getOutputStream());
+				
+				userInfo.add(this);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		@Override
+		public void run() {
+			System.out.println("run");
+			System.out.println(userInfo);
+			while(true) {
+				try {
+					data = dis.readUTF();
+					dos.writeUTF(data);
+					textArea.append(data);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} finally{
+					try {
+						dis.close();
+						dos.close();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				
+				
 			}
 			
-			String data = bufferedReader.readLine();
-			bw.write(data);
-			bw.flush();
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
+
 	}
-	
-	
-	
-	
-//	class RoomInfomation {
-//
-//		String roomName;
-//
-//		Vector<UserInfomation> roomUserInfo = new Vector();
-//
-//		public RoomInfomation(String roomName, UserInfomation user) {
-//			this.roomName = roomName;
-//			roomUserInfo.add(user);
-//		}
-//
-//		public void addUser(UserInfomation user) {
-//			roomUserInfo.add(user);
-//		}
+
+	class RoomInfomation {
+
+		String roomName;
+
+		Vector<UserInfomation> roomUserInfo = new Vector();
+
+		public RoomInfomation(String roomName, UserInfomation user) {
+			this.roomName = roomName;
+			roomUserInfo.add(user);
+		}
+
+		public void addUser(UserInfomation user) {
+			roomUserInfo.add(user);
+		}
 		
 	
 
-//	}
+	}
 
 	public static void main(String[] args) {
 		new ServerFile();

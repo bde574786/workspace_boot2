@@ -1,4 +1,4 @@
-package ch00;
+package test;
 
 import java.awt.Container;
 import java.io.BufferedReader;
@@ -25,7 +25,6 @@ public class ClientFile extends JFrame {
 	JPanel panel;
 	JPanel userPanel;
 	JTabbedPane tab;
-	
 	JLabel label;
 	JLabel hostIpLabel;
 	JLabel userIdLabel;
@@ -55,7 +54,7 @@ public class ClientFile extends JFrame {
 	public ClientFile() {
 		initData();
 		inputPortNum();
-//		start();
+		start();
 
 	}
 
@@ -111,81 +110,66 @@ public class ClientFile extends JFrame {
 		tab.addTab("서버 연결", panel);
 		panel.setLayout(null);
 
-		hostIpLabel = new JLabel("HostIP");
-		hostIpLabel.setBounds(25, 10, 200, 100);
-		panel.add(hostIpLabel);
-		
+		label = new JLabel("Host_IP");
+		label.setBounds(25, 10, 200, 100);
+		panel.add(label);
+
 		hostIpTextField = new JTextField("127.0.0.1");
 		hostIpTextField.setBounds(100, 50, 199, 25);
 		panel.add(hostIpTextField);
 
-		userIdLabel = new JLabel("UserId");
-		userIdLabel.setBounds(25, 110, 200, 100);
-		panel.add(userIdLabel);
-
-		userIdTextField = new JTextField();
-		userIdTextField.setBounds(100, 150, 199, 25);
-		panel.add(userIdTextField);
-		
-		
-		
-		
 		
 		panel = new JPanel();
 		panel.add(new JButton("버튼2"));
 		tab.add("채팅", panel);
-		
-		
-		
-		
-		
+
 		panel = new JPanel();
 		panel.add(new JButton("버튼3"));
 		tab.add("기타", panel);
 		
 	}
 
-//	public void start() {
-//
-//		try {
-//			socket = new Socket(IP, PORT);
-//			bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-//
-//			System.out.println("키보드 연결");
-//			keyboardBufferedReader = new BufferedReader(new InputStreamReader(System.in));
-//
-//			// 초기화 처리
-//			bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-//
-//			// 새로운 쓰레드 시작
-//			ReadThread readThread = new ReadThread();
-//			Thread thread = new Thread(readThread);
-//			thread.start();
-//
-//			BufferedWriter bw = new BufferedWriter(new FileWriter("log.txt", true));
-//			mainFlag = true;
-//
-//			while (mainFlag) {
-//				String msg = keyboardBufferedReader.readLine();
-//
-//				bufferedWriter.write(msg + "\n");
-//				bufferedWriter.flush();
-//
-//				bw.write(msg);
-//				bw.flush();
-//
-//			}
-//
-//		} catch (UnknownHostException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//			mainFlag = false;
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//
-//	}
+	public void start() {
+
+		try {
+			socket = new Socket(IP, PORT);
+			bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+
+			System.out.println("키보드 연결");
+			keyboardBufferedReader = new BufferedReader(new InputStreamReader(System.in));
+
+			// 초기화 처리
+			bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+			// 새로운 쓰레드 시작
+			ReadThread readThread = new ReadThread();
+			Thread thread = new Thread(readThread);
+			thread.start();
+
+			BufferedWriter bw = new BufferedWriter(new FileWriter("log.txt", true));
+			mainFlag = true;
+
+			while (mainFlag) {
+				String msg = keyboardBufferedReader.readLine();
+
+				bufferedWriter.write(msg + "\n");
+				bufferedWriter.flush();
+
+				bw.write(msg);
+				bw.flush();
+
+			}
+
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			mainFlag = false;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
 
 	private class ReadThread implements Runnable {
 		@Override
