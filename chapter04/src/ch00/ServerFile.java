@@ -19,12 +19,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import lombok.Getter;
 
-
+@Getter
 public class ServerFile extends JFrame implements ActionListener {
 
 	ServerFile mContext = this;
-	
+
 	JFrame frame;
 	JLabel label;
 	JScrollPane scrollbar;
@@ -35,7 +36,7 @@ public class ServerFile extends JFrame implements ActionListener {
 
 	private ServerSocket serverSocket;
 	private Socket socket;
-	private int port;
+	 int port;
 
 	private BufferedReader bufferedReader;
 	private BufferedWriter bufferedWriter;
@@ -47,22 +48,17 @@ public class ServerFile extends JFrame implements ActionListener {
 	boolean mainFlag;
 	boolean threadFlag;
 
-	private final int PORT = 10000;
-
 	public ServerFile() {
-		System.out.println("서버");
 		initData();
-		startServer();
 		addEventListener();
-		saveLog();
 	}
 
 	private void initData() {
 		setVisible(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setLocationRelativeTo(null);
 
 		frame = new JFrame();
+		setLocationRelativeTo(null);
 		frame.setLayout(null);
 		frame.setSize(400, 300);
 
@@ -95,6 +91,7 @@ public class ServerFile extends JFrame implements ActionListener {
 		startBtn = new JButton("실행");
 		startBtn.setBounds(180, 270, 79, 35);
 		panel.add(startBtn);
+
 	}
 
 	private void addEventListener() {
@@ -103,22 +100,36 @@ public class ServerFile extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		int state = 0;
 		if (e.getSource() == startBtn) {
-			if (portTextField.getText().length() == 0) {
-				textArea.append("값을 입력 하세요");
-			} else {
-				port = Integer.parseInt(portTextField.getText());
-				portTextField.setEditable(false);
-				startBtn.setEnabled(false);
+			try {
+				if (portTextField.getText().length() == 0) {
+					textArea.append("값을 입력하세요\n");
+				} else {
+					port = Integer.parseInt(portTextField.getText());
+					startServer();
+
+					portTextField.setEditable(false);
+					startBtn.setEnabled(false);
+					state = 1;
+				}
+			} catch (NumberFormatException e2) {
+				textArea.append("숫자만 입력하세요\n");
 			}
 
+			if (state == 1) {
+				textArea.append("서버를 실행합니다\n");
+				textArea.append("클라이언트 기다리는 중 ...\n");
+				System.out.println(port);
+
+			}
 		}
 
 	}
 
 	private void startServer() {
 		try {
-			serverSocket = new ServerSocket(PORT);
+			serverSocket = new ServerSocket(port);
 			connect();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -133,14 +144,13 @@ public class ServerFile extends JFrame implements ActionListener {
 			public void run() {
 				while (true) {
 					try {
-						System.out.println("클라이언트 대기 중");
+						System.out.println("클라이언트 대기");
 						socket = serverSocket.accept();
-						
+						textArea.append("연결되었습니다.\n");
 						UserSocket userSocket = new UserSocket(mContext, socket);
 						userSocket.start();
 						userInfo.add(userSocket);
-						
-						
+
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -152,33 +162,13 @@ public class ServerFile extends JFrame implements ActionListener {
 
 	}
 
-	
-//	private class WriteThread implements Runnable {
-//		@Override
-//		public void run() {
-//			while (threadFlag) {
-//				try {
-//					String msg = keyboardBufferedReader.readLine();
-//					bufferedWriter.write(msg + '\n');
-//					bufferedWriter.flush();
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//					threadFlag = false;
-//				}
-//			}
-//		}
-//	}
-
-	
-
 	public void broadcast(String msg) {
-		
-		for(int i = 0; i < userInfo.size(); i++) {
+		for (int i = 0; i < userInfo.size(); i++) {
 			userInfo.get(i).sendMessage(msg);
+			saveLog();
 		}
 	}
-	
-	
+
 	public void sendMessage(String msg) {
 		try {
 			bufferedWriter.write(msg + '\n');
@@ -188,28 +178,43 @@ public class ServerFile extends JFrame implements ActionListener {
 			e.printStackTrace();
 		}
 	}
-	
 
 	public void saveLog() {
-		try {
-			BufferedWriter bw = new BufferedWriter(new FileWriter("log.txt", true));
-			for (int i = 0; i < userInfo.size(); i++) {
-				bufferedReader = new BufferedReader(new InputStreamReader());
+//		for (int i = 0; i < userInfo.size(); i++) {
+//			System.out.println("123");
+//			try {
+//				bufferedReader = new BufferedReader(new InputStreamReader(userInfo.get(i).getSocket().getInputStream()));
+//				String data = bufferedReader.readLine();
+//				
+//				BufferedWriter bw = new BufferedWriter(new FileWriter("log.txt", true));
+//				bw.write(data);
+//				bw.flush();
+//				
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+
+		StringBuffer st = new StringBuffer();
+
+		for (int i = 0; i < userInfo.size(); i++) {
+			try {
+				bufferedReader = new BufferedReader(
+						new InputStreamReader(userInfo.get(i).getSocket().getInputStream()));
+				st.append(bufferedReader.readLine());
+				BufferedWriter bw = new BufferedWriter(new FileWriter("log.txt", true));
+				bw.write(st.toString());
+				bw.flush();
+
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			
-			String data = bufferedReader.readLine();
-			bw.write(data);
-			bw.flush();
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
+
 	}
-	
-	
-	
-	
+
 //	class RoomInfomation {
 //
 //		String roomName;
@@ -224,8 +229,6 @@ public class ServerFile extends JFrame implements ActionListener {
 //		public void addUser(UserInfomation user) {
 //			roomUserInfo.add(user);
 //		}
-		
-	
 
 //	}
 

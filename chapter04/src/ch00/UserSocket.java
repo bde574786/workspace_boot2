@@ -7,6 +7,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 
+import lombok.Data;
+
+@Data
 public class UserSocket extends Thread {
 
 	private ServerFile mContext;
