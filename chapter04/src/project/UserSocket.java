@@ -8,15 +8,31 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.StringTokenizer;
 
+import lombok.Data;
+
+
 public class UserSocket extends Thread {
 
-	private String name;
+	private String userName;
 	private Server mContext;
 	private Socket socket;
 	String myCurrentRoomName;
 
 	private BufferedReader bufferedReader;
 	private BufferedWriter bufferedWriter;
+
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public BufferedWriter getBufferedWriter() {
+		return bufferedWriter;
+	}
+
+	public BufferedReader getBufferedReader() {
+		return bufferedReader;
+	}
 
 	public UserSocket(Server mContext, Socket socket) {
 		this.mContext = mContext;
@@ -47,17 +63,26 @@ public class UserSocket extends Thread {
 
 	private void inMessage(String msg) {
 		// 토크나이저
-		String str = "";
-		StringTokenizer st = new StringTokenizer(str, "/");
+		StringTokenizer st = new StringTokenizer(msg, "/");
 
 		String protocol = st.nextToken();
 		String message = st.nextToken();
 
-		if ("username".equals(protocol)) {
-			this.name = message;
-		} else if ("귓말".equals(protocol)) {
-//			mContext.
-			
+		System.out.println(protocol);
+		System.out.println(message);
+		
+		if ("귓말".equals(protocol)) {
+			System.out.println("귓말 들어왔음");
+			for (int i = 0; i < mContext.getUserInfo().size(); i++) {
+				UserSocket socket = mContext.getUserInfo().elementAt(i);
+				if(socket.userName.equals(message)) {
+					String str = st.nextToken();
+					System.out.println(socket.getName());
+					
+					mContext.sendMessage("귓말/" + userName + "/" + str);
+					System.out.println("샌ㅇ드 메세지까지는 됬음 ");
+				}
+			}
 		} else if ("createRoom".equals(protocol)) {
 			// new RoomInfo(방이름);
 			// 전체 사용자한테 새로운 방이 생겼어 방송 ~~~
@@ -75,8 +100,8 @@ public class UserSocket extends Thread {
 					try {
 						String msg = bufferedReader.readLine();
 						System.out.println("클라이언트로 부터 온 메시지 : " + msg);
-//						sendMessage("[[[[[[" + msg + "]]]]]]");
-						mContext.broadcast(msg);
+						inMessage(msg);
+							
 					} catch (IOException e) {
 						e.printStackTrace();
 					}

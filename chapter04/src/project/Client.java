@@ -39,6 +39,7 @@ public class Client extends ClientPanel implements ActionListener {
 		createRoomBtn.addActionListener(this);
 		sendBtn.addActionListener(this);
 		joinBtn.addActionListener(this);
+		messageBtn.addActionListener(this);
 	}
 
 	@Override
@@ -46,12 +47,15 @@ public class Client extends ClientPanel implements ActionListener {
 		if (e.getSource() == connectBtn) {
 			start();
 			connectBtn.setEnabled(false);
+			sendMessageToServer(userIdTextField.getText());
 		} else if (e.getSource() == createRoomBtn) {
-			
+			  
 		} else if (e.getSource() == sendBtn) {
 //			sendMessageToServer("username/" + sendMessageTextField.getText());
-			sendMessageToServer(sendMessageTextField.getText());
-			
+//			sendMessageToServer("귓말/" + sendMessageTextField.getText());
+		} else if(e.getSource() == messageBtn) {
+			sendMessageToServer("귓말/" + sendMessageTextField.getText());
+			sendMessageTextField.setText(null);
 		} else if (e.getSource() == joinBtn) {
 
 		} 
@@ -103,9 +107,9 @@ public class Client extends ClientPanel implements ActionListener {
 				try {
 					String msg = bufferedReader.readLine();
 					System.out.println("서버로부터 메세지가 도착했습니다\n" + msg);
-					chattingArea.append(msg +'\n');
+//					chattingArea.append(msg +'\n');
 					sendMessageTextField.setText(null);
-//					inmessage(msg);
+					inmessage(msg);
 					
 					
 				} catch (IOException e) {
@@ -134,6 +138,10 @@ public class Client extends ClientPanel implements ActionListener {
 		}
 	}
 
+	
+
+	
+	
 	private void inmessage(String str) {
 		Vector<String> userMsgList = new Vector<String>();
 		Vector<String> roomList = new Vector<String>();
@@ -144,7 +152,17 @@ public class Client extends ClientPanel implements ActionListener {
 		String protocol = st.nextToken();
 		String message = st.nextToken();
 		
-		sendMessageToServer("username/" + userIdTextField.getText());
+		if(protocol.equals("NewUser")) {
+			allUserArea.append(message);
+		} else if(protocol.equals("귓말")) {
+			System.out.println("sdafgasdfa");
+			String msg = st.nextToken();
+			JOptionPane.showMessageDialog(null, msg, message + "님의 쪽지", JOptionPane
+					.PLAIN_MESSAGE);
+		}
+		
+		
+		
 		
 		
 //		if(protocol.equals("NewUser")) {

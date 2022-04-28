@@ -79,7 +79,6 @@ public class ClientPanel extends JFrame {
 		userIdTextField.setBounds(80, 120, 199, 25);
 		panel.add(userIdTextField);
 		
-		
 
 		connectBtn = new JButton("서버 연결");
 		connectBtn.setBounds(135, 165, 90, 20);

@@ -15,17 +15,18 @@ import java.util.Vector;
 
 import javax.swing.JTextArea;
 
+import lombok.Data;
 
 public class Server extends ServerPanel implements ActionListener {
 
 	Server mContext = this;
 
-	
+	UserSocket userSocket;
+//	
 	private ServerSocket serverSocket;
 	private UserSocket u;
 	int port;
 
-	private BufferedReader bufferedReader;
 	private BufferedWriter bufferedWriter;
 
 	private Vector<UserSocket> userInfo = new Vector();
@@ -33,6 +34,11 @@ public class Server extends ServerPanel implements ActionListener {
 
 	boolean mainFlag;
 	boolean threadFlag;
+
+	
+	public Vector<UserSocket> getUserInfo() {
+		return userInfo;
+	}
 
 	public Server() {
 		addEventListener();
@@ -74,6 +80,7 @@ public class Server extends ServerPanel implements ActionListener {
 
 	}
 
+	
 	private void startServer() {
 		try {
 			serverSocket = new ServerSocket(port);
@@ -95,10 +102,16 @@ public class Server extends ServerPanel implements ActionListener {
 						Socket socket = serverSocket.accept();
 
 						textArea.append("연결되었습니다.\n");
-						UserSocket userSocket = new UserSocket(mContext, socket);
+						
+						
+						userSocket = new UserSocket(mContext, socket);
+						String id = userSocket.getBufferedReader().readLine();
 						userSocket.start();
+						System.out.println("클라이언트에서 온 id :" + id);
+						userSocket.setUserName(id);
 						userInfo.add(userSocket);
-
+						broadcast("NewUser/" + id);
+						
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -110,6 +123,8 @@ public class Server extends ServerPanel implements ActionListener {
 
 	}
 
+	
+	
 	public void broadcast(String msg) {
 		for (int i = 0; i < userInfo.size(); i++) {
 			userInfo.get(i).sendMessage(msg);
@@ -119,8 +134,11 @@ public class Server extends ServerPanel implements ActionListener {
 
 	public void sendMessage(String msg) {
 		try {
-			bufferedWriter.write(msg + '\n');
-			bufferedWriter.flush();
+			System.out.println(msg);
+			System.out.println("샌드메세지 확인 ");
+			
+			userSocket.getBufferedWriter().write(msg + '\n');;
+			userSocket.getBufferedWriter().flush();
 //			bufferedWriter.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
