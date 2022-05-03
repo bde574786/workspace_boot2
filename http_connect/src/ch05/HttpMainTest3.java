@@ -1,18 +1,20 @@
-package ch01;
+package ch05;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import com.google.gson.Gson;
+
 import dto.Post;
 
-public class HttpMainTest2 {
+public class HttpMainTest3 {
 
 	public static void main(String[] args) {
 
 		try {
-			URL url = new URL("https://jsonplaceholder.typicode.com/posts/20");
+			URL url = new URL("https://yts.mx/api/v2/list_movies.json");
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 			connection.setRequestMethod("GET"); // REST API
 //			connection.addRequestProperty("content type", "application/json");
@@ -33,28 +35,11 @@ public class HttpMainTest2 {
 			}
 
 			String str = buffer.toString();
-			System.out.println(str);
-			System.out.println("---------------------");
-
-			Post post = new Post();
-
-			post.userId = Integer.parseInt(str.substring(13, 14));
-			System.out.println(post.userId);
-
-			post.id = Integer.parseInt(str.substring(23, 25));
-			System.out.println(post.id);
-
-			post.title = str.substring(38, 72);
-			System.out.println(post.title);
-
-			post.body = str.substring(85, 301);
-			System.out.println(post.body);
-
-//			System.out.println(post.userId);
-//			System.out.println(str.substring(13,14));
-//			
-//			System.out.println(str.substring(b, b+6));
-//			System.out.println(str.substring(d));
+			
+			Yts yts = new Gson().fromJson(str, Yts.class);
+			System.out.println(yts.getData().getMovieCount());
+			
+			
 
 		} catch (Exception e) {
 			e.printStackTrace();

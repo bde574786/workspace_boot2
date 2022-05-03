@@ -1,4 +1,4 @@
-package ch01;
+package ch04;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,6 +6,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import com.google.gson.Gson;
+
+import dto.Post;
 
 public class HttpMainTest1 {
 
@@ -23,7 +27,7 @@ public class HttpMainTest1 {
 			// 100, 200, 300, 400, 500 대 종류가 있다.
 			// 200번대는 성공
 			int statusCode = connection.getResponseCode();
-			System.out.println("statusCode : " + statusCode);
+//			System.out.println("statusCode : " + statusCode);
 
 			// http 통신 할 때 스트림을 달아야 한다.
 			BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -39,9 +43,10 @@ public class HttpMainTest1 {
 
 			String str = sb.toString();
 			System.out.println(str);
-			System.out.println("------------------------------");
-			System.out.println(str.substring(5, 11));
-			System.out.println(str.substring(14, 15));
+			System.out.println("================");
+			// str은 json형식의 문자열
+			Post post = new Gson().fromJson(str, Post.class);
+			System.out.println(post);
 
 		} catch (MalformedURLException e) {
 			e.printStackTrace();

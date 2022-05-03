@@ -37,19 +37,16 @@ public class HttpMainTest3 {
 			String str = buffer.toString();
 			System.out.println(str);
 			System.out.println("---------------------");
-			
-			
+
 			Gson gson = new Gson();
 			// 리플렉션 기법
 			Post post = gson.fromJson(str, Post.class);
-			
+
 			System.out.println(post.userId);
 			System.out.println(post.id);
 			System.out.println(post.title);
 			System.out.println(post.body);
-			
-			
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
