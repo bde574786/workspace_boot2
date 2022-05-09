@@ -1,4 +1,4 @@
-package ch04;
+package ch05;
 
 import lombok.Data;
 

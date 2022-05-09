@@ -28,14 +28,6 @@ public class ShopDbDao implements IShopDb {
 
 			while (resultSet.next()) {
 
-//				System.out.println(resultSet.getString("userName"));
-//				System.out.println(resultSet.getString("birthYear"));
-//				System.out.println(resultSet.getString("addr"));
-//				System.out.println(resultSet.getString("mobile"));
-//				System.out.println(resultSet.getString("prodName"));
-//				System.out.println(resultSet.getString("price"));
-//				System.out.println(resultSet.getString("amount"));
-
 				ShopDbDto dto = new ShopDbDto();
 
 				dto.setUserName(resultSet.getString("userName"));
