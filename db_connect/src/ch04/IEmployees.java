@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public interface IEmployees {
 
 	// 직원과 월급 조회
-	ArrayList<EmployeesDto> searchSalary();
+	ArrayList<SalaryDto> searchSalary();
 
 	// 고용날짜에 입사한 직원 출력
 	ArrayList<EmployeesDto> joinCompanyDate(String hire_date);
@@ -17,6 +17,6 @@ public interface IEmployees {
 	ArrayList<EmployeesDto> printSenior();
 	
 	// 부서 별 동기들 출력
-	ArrayList<EmployeesDto> printColleague(String title);
+	ArrayList<ColleagueDto> printColleague(String title);
 	
 }

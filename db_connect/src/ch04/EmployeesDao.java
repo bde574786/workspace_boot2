@@ -13,9 +13,9 @@ public class EmployeesDao implements IEmployees {
 	ResultSet resultSet = null;
 
 	@Override
-	public ArrayList<EmployeesDto> searchSalary() {
+	public ArrayList<SalaryDto> searchSalary() {
 		
-		ArrayList<EmployeesDto> employees = new ArrayList<EmployeesDto>();
+		ArrayList<SalaryDto> salary = new ArrayList<SalaryDto>();
 		
 		try {
 			String query = "select e.emp_no, s.salary\r\n" + "from employees as e\r\n" + "inner join salaries as s\r\n"
@@ -27,19 +27,19 @@ public class EmployeesDao implements IEmployees {
 
 			while (resultSet.next()) {
 
-				EmployeesDto dto = new EmployeesDto();
+				SalaryDto dto = new SalaryDto();
 
 				dto.setEmp_no(resultSet.getInt("emp_no"));
 				dto.setSalary(resultSet.getInt("salary"));
 
-				employees.add(dto);
+				salary.add(dto);
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		return employees;
+		return salary;
 
 	}
 
@@ -151,11 +151,11 @@ public class EmployeesDao implements IEmployees {
 	
 	
 	@Override
-	public ArrayList<EmployeesDto> printColleague(String title) {
-		ArrayList<EmployeesDto> employees = new ArrayList<EmployeesDto>();
+	public ArrayList<ColleagueDto> printColleague(String title) {
+		ArrayList<ColleagueDto> colleague = new ArrayList<ColleagueDto>();
 		
 		try {
-			String query = "select t.title, count(e.emp_no) as '동기'\r\n"
+			String query = "select t.title, count(e.emp_no) as 'colleague'\r\n"
 					+ "from employees as e\r\n"
 					+ "inner join titles as t\r\n"
 					+ "on e.emp_no = t.emp_no\r\n"
@@ -167,23 +167,24 @@ public class EmployeesDao implements IEmployees {
 			
 			preparedStatement.setString(1, title);
 			
+			
 			resultSet = preparedStatement.executeQuery();
 
 			while (resultSet.next()) {
 
-				EmployeesDto dto = new EmployeesDto();
+				ColleagueDto dto = new ColleagueDto();
 
 				dto.setTitle(resultSet.getString("title"));
-			
+				dto.setColleague(resultSet.getString("colleague"));
 
-				employees.add(dto);
+				colleague.add(dto);
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		return employees;
+		return colleague;
 	}
 	
 	
