@@ -24,10 +24,12 @@ public class DBClient {
 	// 싱글톤 처리
 	private static DBClient dbClient;
 
+	
 	private DBClient() {
 
 	}
 
+	
 	public static DBClient getInstance() {
 		if (dbClient == null) {
 			dbClient = new DBClient();
@@ -35,13 +37,14 @@ public class DBClient {
 		return dbClient;
 	}
 
+	
 	public Connection getConnection() {
-
 		if (conn == null) {
 			// "jdbc:mysql://localhost:3306/shopdb?serverTimezone=Asia/Seoul&characterEncoding=UTF-8";
 			String urlFormat = "jdbc:mysql://%s:%d/%s?serverTimezone=Asia/Seoul&characterEncoding=%s";
 			String url = String.format(urlFormat, DB_HOST, DB_PORT, DB_DATABASE_NAME, DB_CHARSET);
 
+			
 			// MYYSQL JDBC 드라이버 클래스를 로딩해서 DriverManager 클래스에 등록한다.
 			try {
 				Class.forName("com.mysql.cj.jdbc.Driver");
