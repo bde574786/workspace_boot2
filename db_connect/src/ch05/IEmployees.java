@@ -18,7 +18,7 @@ public interface IEmployees {
 	ArrayList<EmployeesDto> getEmployeesHire_date();
 	
 	// 직원의 사번과 연봉 출력
-	ArrayList<EmployeesDto> getEmp_noAndSalary();
+	ArrayList<SalaryDto> getEmp_noAndSalary();
 	
 	
 }

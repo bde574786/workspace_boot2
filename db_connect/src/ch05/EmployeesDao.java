@@ -162,9 +162,9 @@ public class EmployeesDao implements IEmployees {
 	}
 
 	@Override
-	public ArrayList<EmployeesDto> getEmp_noAndSalary() {
+	public ArrayList<SalaryDto> getEmp_noAndSalary() {
 		
-		ArrayList<EmployeesDto> employees = new ArrayList<EmployeesDto>();
+		ArrayList<SalaryDto> salary = new ArrayList<SalaryDto>();
 		
 		try {
 			String query = "select e.emp_no,(select s.salary\r\n"
@@ -180,12 +180,12 @@ public class EmployeesDao implements IEmployees {
 			
 			while(resultSet.next()) {
 				
-				EmployeesDto dto = new EmployeesDto();
+				SalaryDto dto = new SalaryDto();
 				
 				dto.setEmp_no(resultSet.getInt("emp_no"));
 				dto.setSalary(resultSet.getInt("salary"));
 				
-				employees.add(dto);
+				salary.add(dto);
 			}
 			
 		} catch (SQLException e) {
@@ -194,7 +194,7 @@ public class EmployeesDao implements IEmployees {
 		}
 		
 		
-		return employees;
+		return salary;
 	}
 	
 	
