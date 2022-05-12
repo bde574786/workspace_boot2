@@ -8,8 +8,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import project.administor.MovieInfoDao;
-
 public class StartPage extends JFrame {
 
     private JPanel mainPanel;
@@ -22,7 +20,6 @@ public class StartPage extends JFrame {
         setTitle("영화 리뷰/평점 작성 프로그램");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-
 
         mainPanel = new JPanel();
         mainPanel.setLayout(null);
@@ -47,16 +44,21 @@ public class StartPage extends JFrame {
 
         // 익명 구현 객체
         button1.addActionListener(new ActionListener() {
+
             @Override
             public void actionPerformed(ActionEvent e) {
-            	new MovieInfoDao().select();
+                MovieInfoDao dao = new MovieInfoDao();
+
+                dao.selectAll();
             }
         });
 
         button2.addActionListener(new ActionListener() {
+
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("사용자 시작");
+                Review review = new Review();
             }
         });
     }

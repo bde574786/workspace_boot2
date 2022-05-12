@@ -1,4 +1,4 @@
-package project.administor;
+package project;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

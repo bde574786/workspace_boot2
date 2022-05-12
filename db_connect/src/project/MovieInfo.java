@@ -1,4 +1,4 @@
-package project.administor;
+package project;
 
 import java.awt.Checkbox;
 import java.awt.event.ActionEvent;
@@ -24,7 +24,7 @@ import javax.swing.table.TableColumnModel;
 import lombok.Data;
 
 @Data
-public class MovieInfo extends JFrame implements ItemListener {
+public class MovieInfo extends JFrame implements ActionListener, ItemListener {
 
 	// 카테고리 검색
 	private JPanel searchPanel;
@@ -39,7 +39,7 @@ public class MovieInfo extends JFrame implements ItemListener {
 
 	private JTextField searchField;
 
-	private JButton searchbutton;
+	private JButton searchButton;
 
 //	private JComboBox comboBox;
 
@@ -51,7 +51,7 @@ public class MovieInfo extends JFrame implements ItemListener {
 
 	// 영화 테이블
 	String schema[] = { "번호", "이름", "개봉년도", "수익", "관객수", "스크린 수", "평점" };
-
+	
 	public MovieInfo() {
 
 		setBounds(100, 100, 628, 515);
@@ -99,11 +99,11 @@ public class MovieInfo extends JFrame implements ItemListener {
 		searchField.setBounds(20, 20, 230, 26);
 		searchPanel.add(searchField);
 
-		searchbutton = new JButton("검색");
-		searchbutton.setBounds(280, 20, 70, 25);
-		searchPanel.add(searchbutton);
+		searchButton = new JButton("검색");
+		searchButton.setBounds(280, 20, 70, 25);
+		searchPanel.add(searchButton);
 
-//        movieName.addActionListener(this);
+		searchButton.addActionListener(this);
 //        releaseDate.addActionListener(this);
 
 		movieName.addItemListener(this);
@@ -137,12 +137,16 @@ public class MovieInfo extends JFrame implements ItemListener {
 
 	}
 
+	// 라디오 버튼
 	@Override
 	public void itemStateChanged(ItemEvent e) {
+		
+		
+		
+		// 영화 제목 버튼 클릭됨
 		if (e.getSource() == movieName) {
 			releaseDate.setEnabled(false);
-			
-			
+			// 영화 쿼리 뿌림
 			
 			if (e.getStateChange() == ItemEvent.DESELECTED) {
 				releaseDate.setEnabled(true);
@@ -153,7 +157,18 @@ public class MovieInfo extends JFrame implements ItemListener {
 				movieName.setEnabled(true);
 			}
 		}
-
 	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		
+//		if(e.getSource() == searchButton) {
+//			dao.selectByMovieName(searchField.getText());
+//		}
+	}
+	
+
+	
+	
 
 }

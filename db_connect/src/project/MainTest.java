@@ -1,6 +1,5 @@
 package project;
 
-import project.administor.MovieInfoDao;
 
 public class MainTest {
 
