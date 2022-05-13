@@ -47,9 +47,9 @@ public class StartPage extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                MovieInfoDao dao = new MovieInfoDao();
-
-                dao.selectAll();
+//                MovieInfoDao dao = new MovieInfoDao();
+                MovieInfo info = new MovieInfo();
+//                dao.selectAll();
             }
         });
 

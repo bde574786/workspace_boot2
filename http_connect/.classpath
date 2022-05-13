@@ -7,6 +7,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/utils/jars/lombok.jar"/>
-	<classpathentry kind="lib" path="lib/gson-2.8.5.jar"/>
+	<classpathentry kind="lib" path="C:/utils/jars/gson-2.8.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

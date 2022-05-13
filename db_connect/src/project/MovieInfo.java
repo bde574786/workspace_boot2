@@ -24,7 +24,9 @@ import javax.swing.table.TableColumnModel;
 import lombok.Data;
 
 @Data
-public class MovieInfo extends JFrame implements ActionListener, ItemListener {
+public class MovieInfo extends JFrame implements ItemListener {
+
+	MovieInfoDao dao;
 
 	// 카테고리 검색
 	private JPanel searchPanel;
@@ -37,10 +39,12 @@ public class MovieInfo extends JFrame implements ActionListener, ItemListener {
 	private JRadioButton movieName;
 	private JRadioButton releaseDate;
 
-	private JTextField searchField;
+	private JTextField MovieNameField;
+	private JTextField releasedDateField;
 
-	private JButton searchButton;
-
+	private JButton MovieNameButton;
+	private JButton ReleasedDateButton;
+	
 //	private JComboBox comboBox;
 
 	// 영화 조회
@@ -51,10 +55,12 @@ public class MovieInfo extends JFrame implements ActionListener, ItemListener {
 
 	// 영화 테이블
 	String schema[] = { "번호", "이름", "개봉년도", "수익", "관객수", "스크린 수", "평점" };
-	
+
 	public MovieInfo() {
 
-		setBounds(100, 100, 628, 515);
+		dao = new MovieInfoDao();
+
+		setBounds(100, 100, 628, 600);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		// 메인 패널
@@ -68,7 +74,7 @@ public class MovieInfo extends JFrame implements ActionListener, ItemListener {
 		searchPanel.setLayout(null);
 		categoryBorder = new TitledBorder("카테고리 검색");
 		searchPanel.setBorder(categoryBorder);
-		searchPanel.setBounds(10, 80, 592, 60);
+		searchPanel.setBounds(10, 80, 592, 105);
 		mainPanel.add(searchPanel);
 
 		//
@@ -82,28 +88,35 @@ public class MovieInfo extends JFrame implements ActionListener, ItemListener {
 		model = new DefaultTableModel(null, schema);
 		table = new JTable(model);
 		scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(12, 153, 588, 313);
+		scrollPane.setBounds(12, 200, 588,330);
 		scrollPane.setViewportView(table);
 		mainPanel.add(scrollPane);
 
 		// 라디오 박스
 		movieName = new JRadioButton("이름");
-		movieName.setBounds(380, 27, 90, 12);
+		movieName.setBounds(20, 27, 50, 12);
 		searchPanel.add(movieName);
 
 		releaseDate = new JRadioButton("개봉일");
-		releaseDate.setBounds(480, 27, 90, 12);
+		releaseDate.setBounds(20, 67, 70, 12);
 		searchPanel.add(releaseDate);
 
-		searchField = new JTextField("명량");
-		searchField.setBounds(20, 20, 230, 26);
-		searchPanel.add(searchField);
+		MovieNameField = new JTextField("명량");
+		MovieNameField.setBounds(100, 20, 230, 26);
+		searchPanel.add(MovieNameField);
 
-		searchButton = new JButton("검색");
-		searchButton.setBounds(280, 20, 70, 25);
-		searchPanel.add(searchButton);
-
-		searchButton.addActionListener(this);
+		releasedDateField = new JTextField("2014");
+		releasedDateField.setBounds(100, 62, 230, 26);
+		searchPanel.add(releasedDateField);
+		
+		MovieNameButton = new JButton("검색");
+		MovieNameButton.setBounds(340, 20, 65, 25);
+		searchPanel.add(MovieNameButton);
+		
+		ReleasedDateButton = new JButton("검색");
+		ReleasedDateButton.setBounds(340, 60, 65, 25);
+		searchPanel.add(ReleasedDateButton);
+//		searchButton.addActionListener(this);
 //        releaseDate.addActionListener(this);
 
 		movieName.addItemListener(this);
@@ -116,6 +129,8 @@ public class MovieInfo extends JFrame implements ActionListener, ItemListener {
 		for (int i = 0; i < columnModel.getColumnCount(); i++) {
 			columnModel.getColumn(i).setCellRenderer(defaultTableCellRenderer);
 		}
+
+		SelectAll();
 
 //        comboBox = new JComboBox();
 //        comboBox.setBounds(146, 40, 100, 20);
@@ -137,38 +152,109 @@ public class MovieInfo extends JFrame implements ActionListener, ItemListener {
 
 	}
 
+	public void SelectAll() {
+//		dao.selectAll();
+		for (int i = 0; i < dao.selectAll().size(); i++) {
+			model.addRow(new Object[] { dao.selectAll().get(i).getMovieNumber(), dao.selectAll().get(i).getMovieName(),
+					dao.selectAll().get(i).getReleasedDate(), dao.selectAll().get(i).getRevenue(),
+					dao.selectAll().get(i).getAudience(), dao.selectAll().get(i).getScreen(),
+					dao.selectAll().get(i).getStarRating() });
+		}
+	}
+
 	// 라디오 버튼
 	@Override
-	public void itemStateChanged(ItemEvent e) {
-		
-		
-		
+	public void itemStateChanged(ItemEvent e1) {
+
 		// 영화 제목 버튼 클릭됨
-		if (e.getSource() == movieName) {
+		if (e1.getSource() == movieName) {
 			releaseDate.setEnabled(false);
+			releasedDateField.setEnabled(false);
+			ReleasedDateButton.setEnabled(false);
 			// 영화 쿼리 뿌림
-			
-			if (e.getStateChange() == ItemEvent.DESELECTED) {
+
+			MovieNameButton.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if (e.getSource() == MovieNameButton) {
+						dao.selectByMovieName(MovieNameField.getText());
+
+						if (model.getRowCount() > 0) {
+							for (int i = model.getRowCount() - 1; i > -1; i--) {
+								model.removeRow(i);
+							}
+						}
+
+						for (int i = 0; i < dao.selectByMovieName(MovieNameField.getText()).size(); i++) {
+							System.out.println("영화제목");
+							model.addRow(
+									new Object[] { dao.selectByMovieName(MovieNameField.getText()).get(i).getMovieNumber(),
+											dao.selectByMovieName(MovieNameField.getText()).get(i).getMovieName(),
+											dao.selectByMovieName(MovieNameField.getText()).get(i).getReleasedDate(),
+											dao.selectByMovieName(MovieNameField.getText()).get(i).getRevenue(),
+											dao.selectByMovieName(MovieNameField.getText()).get(i).getAudience(),
+											dao.selectByMovieName(MovieNameField.getText()).get(i).getScreen(),
+											dao.selectByMovieName(MovieNameField.getText()).get(i).getStarRating() });
+						}
+					}
+				}
+			});
+
+			if (e1.getStateChange() == ItemEvent.DESELECTED) {
 				releaseDate.setEnabled(true);
+				releasedDateField.setEnabled(true);
+				ReleasedDateButton.setEnabled(true);
 			}
-		} else if (e.getSource() == releaseDate) {
+		} else if (e1.getSource() == releaseDate) {
 			movieName.setEnabled(false);
-			if (e.getStateChange() == ItemEvent.DESELECTED) {
+			MovieNameField.setEnabled(false);
+			MovieNameButton.setEnabled(false);
+			
+			ReleasedDateButton.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if (e.getSource() == ReleasedDateButton) {
+						dao.selectByReleasedYear(releasedDateField.getText());
+						
+						if (model.getRowCount() > 0) {
+							for (int i = model.getRowCount() - 1; i > -1; i--) {
+								model.removeRow(i);
+							}
+						}
+
+						for (int i = 0; i < dao.selectByReleasedYear(releasedDateField.getText()).size(); i++) {
+							System.out.println("개봉일");
+							model.addRow(new Object[] {
+									dao.selectByReleasedYear(releasedDateField.getText()).get(i).getMovieNumber(),
+									dao.selectByReleasedYear(releasedDateField.getText()).get(i).getMovieName(),
+									dao.selectByReleasedYear(releasedDateField.getText()).get(i).getReleasedDate(),
+									dao.selectByReleasedYear(releasedDateField.getText()).get(i).getRevenue(),
+									dao.selectByReleasedYear(releasedDateField.getText()).get(i).getAudience(),
+									dao.selectByReleasedYear(releasedDateField.getText()).get(i).getScreen(),
+									dao.selectByReleasedYear(releasedDateField.getText()).get(i).getStarRating()
+							});
+						}
+					}
+				}
+			});
+
+			if (e1.getStateChange() == ItemEvent.DESELECTED) {
 				movieName.setEnabled(true);
+				MovieNameField.setEnabled(true);
+				MovieNameButton.setEnabled(true);
 			}
 		}
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		
+//	@Override
+//	public void actionPerformed(ActionEvent e) {
+//		
 //		if(e.getSource() == searchButton) {
+//			MovieInfoDao dao = new MovieInfoDao();
 //			dao.selectByMovieName(searchField.getText());
 //		}
-	}
-	
-
-	
-	
+//	}
 
 }
