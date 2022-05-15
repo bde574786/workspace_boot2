@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import lombok.Data;
 
 @Data
-public class MovieInfoDao implements ISelect{
+public class MovieInfoDao implements ISelect, ICreate, IDelete, IUpdate{
 
 	private static final String TABLE_NAME = "영화정보";
 	private DBClient client;
@@ -154,6 +154,145 @@ public class MovieInfoDao implements ISelect{
 		return dtoAll;
 		
 	}
+
+
+	@Override
+	public ArrayList<MovieInfoDto> insertData(MovieInfoDto dto) {
+		
+		ArrayList<MovieInfoDto> dtoAll = new ArrayList<>();
+//		MovieInfoDto dto = new MovieInfoDto();
+		
+		String query = "INSERT INTO movietbl VALUES(?,?,?,?,?,?,?)";
+		
+		try {
+			
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			
+//			System.out.println(result);
+			
+			preparedStatement.setInt(1,dto.getMovieNumber());
+			preparedStatement.setString(2, dto.getMovieName());
+			preparedStatement.setString(3, dto.getReleasedDate());
+			preparedStatement.setLong(4, dto.getRevenue());
+			preparedStatement.setLong(5, dto.getAudience());
+			preparedStatement.setLong(6, dto.getScreen());
+			preparedStatement.setFloat(7, dto.getStarRating());
+
+			preparedStatement.executeUpdate();
+
+//			dto.setMovieNumber(rs.getInt("movieNumber"));
+//			dto.setMovieName(rs.getString("movieName"));
+//			dto.setReleasedDate(rs.getString("releasedDate"));
+//			dto.setRevenue(rs.getLong("revenue"));
+//			dto.setAudience(rs.getLong("audience"));
+//			dto.setScreen(rs.getInt("screen"));
+//			dto.setStarRating(rs.getFloat("starRating"));
+			
+//			dtoAll.add(dto);
+			
+			
+		
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return dtoAll;
+	}
+
+
+	
+	@Override
+	public ArrayList<MovieInfoDto> updateData(int movieNumber, String movieName, String releasedDate, long revenue, long audience, int screen, float starRating, String updateMovieName) {
+		
+		ArrayList<MovieInfoDto> dtoAll = new ArrayList<>();
+//		MovieInfoDto dto = new MovieInfoDto();
+		
+		
+		String query = "update movietbl set movieNumber = ?, movieName = ?, \r\n"
+				+ "releasedDate = ?, revenue = ?, audience = ?, \r\n"
+				+ "screen = ?, starRating = ? where movieName = ?;";
+		
+		try {
+			PreparedStatement	preparedStatement = connection.prepareStatement(query);
+			
+			preparedStatement.setInt(1, movieNumber);
+			preparedStatement.setString(2, movieName);
+			preparedStatement.setString(3, releasedDate);
+			preparedStatement.setLong(4, revenue);
+			preparedStatement.setLong(5, audience);
+			preparedStatement.setLong(6, screen);
+			preparedStatement.setFloat(7, starRating);
+			preparedStatement.setString(8, updateMovieName);
+			
+			preparedStatement.executeUpdate();
+			
+//			dto.setMovieNumber(rs.getInt("movieNumber"));
+//			dto.setMovieName(rs.getString("movieName"));
+//			dto.setReleasedDate(rs.getString("releasedDate"));
+//			dto.setRevenue(rs.getLong("revenue"));
+//			dto.setAudience(rs.getLong("audience"));
+//			dto.setScreen(rs.getInt("screen"));
+//			dto.setStarRating(rs.getFloat("starRating"));
+//			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return null;
+	}
+	
+	
+	
+	
+	
+	@Override
+	public void deleteData(String movieName) {
+		
+		ArrayList<MovieInfoDto> dtoAll = new ArrayList<>();
+//		MovieInfoDto dto = new MovieInfoDto();
+		
+		String query = "DELETE FROM movietbl where movieName = ?";
+		
+		try {
+			
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			
+			preparedStatement.setString(1, movieName);
+
+			preparedStatement.executeUpdate();
+
+			
+//			dto.setMovieNumber(rs.getInt("movieNumber"));
+//			dto.setMovieName(rs.getString("movieName"));
+//			dto.setReleasedDate(rs.getString("releasedDate"));
+//			dto.setRevenue(rs.getLong("revenue"));
+//			dto.setAudience(rs.getLong("audience"));
+//			dto.setScreen(rs.getInt("screen"));
+//			dto.setStarRating(rs.getFloat("starRating"));
+			
+//			dtoAll.add(dto);
+			
+			
+		
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	}
+
+
+	
+	
+
 	
 
 	
