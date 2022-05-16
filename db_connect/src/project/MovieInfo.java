@@ -33,10 +33,13 @@ public class MovieInfo extends JFrame implements ItemListener {
 
 	// 카테고리 검색
 	private JPanel searchPanel;
+	private JPanel searchPanel2;
 	private TitledBorder categoryBorder;
+	private TitledBorder categoryBorder2;
 
 	// crud
 	private JPanel crudPanel;
+	private JPanel crudPanel2;
 //	private TitledBorder crudBorder;
 
 	private JTabbedPane jTabbedPane;
@@ -46,28 +49,46 @@ public class MovieInfo extends JFrame implements ItemListener {
 //	private JButton deleteButton;
 
 	private JLabel optionLabel;
+	private JLabel optionLabel2;
 	
 	private JRadioButton movieName;
+	private JRadioButton actorName;
 	private JRadioButton releasedDate;
+	private JRadioButton birthYear;
 
 	private JTextField movieNameField;
+	private JTextField actorNameField;
 	private JTextField releasedDateField;
+	private JTextField birthYearField;
 
 	private JButton movieNameButton;
+	private JButton actorNameButton;
 	private JButton releasedDateButton;
+	private JButton birthYearButton;
 
 	private JComboBox comboBox;
+	private JComboBox comboBox2;
 
 	private JButton confirmBotton;
+	private JButton confirmBotton2;
 	
 	// 영화 조회
 	private JTable table;
 	private DefaultTableModel model;
 	private JScrollPane scrollPane;
 	private JPanel mainPanel;
+	
+	// 배우 조회
+	private JTable table2;
+	private DefaultTableModel model2;
+	private JScrollPane scrollPane2;
+	private JPanel mainPanel2;
 
 	// 영화 테이블
 	String schema[] = { "번호", "이름", "개봉년도", "수익", "관객수", "스크린 수", "평점" };
+	
+	// 배우 테이블
+	String schema2[] = { "배우번호", "이름", "출생년도", "키", "몸무게", "배우자"};
 
 	public MovieInfo() {
 
@@ -90,21 +111,30 @@ public class MovieInfo extends JFrame implements ItemListener {
 
 		//
 		crudPanel = new JPanel();
+		crudPanel2 = new JPanel();
 		crudPanel.setLayout(null);
+		crudPanel2.setLayout(null);
 
 		optionLabel = new JLabel("옵션을 선택하세요");
 		optionLabel.setBounds(180, 3, 200, 30);
 		crudPanel.add(optionLabel);
+		optionLabel2 = new JLabel("옵션을 선택하세요");
+		optionLabel2.setBounds(180, 3, 200, 30);
+		crudPanel2.add(optionLabel2);
 		
 		confirmBotton = new JButton("확인");
 		confirmBotton.setBounds(410, 8, 70, 20);
 		crudPanel.add(confirmBotton);
+		confirmBotton2 = new JButton("확인");
+		confirmBotton2.setBounds(410, 8, 70, 20);
+		crudPanel2.add(confirmBotton2);
 		
 		
 		jTabbedPane = new JTabbedPane();
 		jTabbedPane.setBounds(10, 10, 592, 65);
 		jTabbedPane.setTabPlacement(JTabbedPane.TOP);
-		jTabbedPane.add("crud", crudPanel);
+		jTabbedPane.addTab("영화정보", crudPanel);
+		jTabbedPane.addTab("배우정보", crudPanel2);
 		
 		
 		mainPanel.add(jTabbedPane);
@@ -121,26 +151,50 @@ public class MovieInfo extends JFrame implements ItemListener {
 		movieName = new JRadioButton("이름");
 		movieName.setBounds(80, 27, 50, 12);
 		searchPanel.add(movieName);
+		
+		actorName = new JRadioButton("이름");
+		actorName.setBounds(80, 27, 50, 12);
+		searchPanel.add(actorName);
 
 		releasedDate = new JRadioButton("개봉일");
 		releasedDate.setBounds(80, 67, 70, 12);
 		searchPanel.add(releasedDate);
+		
+		birthYear = new JRadioButton("출생년도");
+		birthYear.setBounds(80, 67, 70, 12);
+		searchPanel.add(birthYear);
 
 		movieNameField = new JTextField("명량");
 		movieNameField.setBounds(180, 20, 230, 26);
 		searchPanel.add(movieNameField);
+		
+		actorNameField = new JTextField("최민식");
+		actorNameField.setBounds(180, 20, 230, 26);
+		searchPanel.add(actorNameField);
 
 		releasedDateField = new JTextField("2014");
 		releasedDateField.setBounds(180, 60, 230, 26);
 		searchPanel.add(releasedDateField);
 		
+		birthYearField = new JTextField("1970");
+		birthYearField.setBounds(180, 60, 230, 26);
+		searchPanel.add(birthYearField);
+		
 		movieNameButton = new JButton("검색");
 		movieNameButton.setBounds(440, 20, 65, 25);
 		searchPanel.add(movieNameButton);
 		
+		actorNameButton = new JButton("검색");
+		actorNameButton.setBounds(440, 20, 65, 25);
+		searchPanel.add(actorNameButton);
+		
 		releasedDateButton = new JButton("검색");
 		releasedDateButton.setBounds(440, 60, 65, 25);
 		searchPanel.add(releasedDateButton);
+		
+		birthYearButton = new JButton("검색");
+		birthYearButton.setBounds(440, 60, 65, 25);
+		searchPanel.add(birthYearButton);
 		
 //		searchButton.addActionListener(this);
 //        releaseDate.addActionListener(this);
@@ -148,10 +202,18 @@ public class MovieInfo extends JFrame implements ItemListener {
 		movieName.addItemListener(this);
 		releasedDate.addItemListener(this);
 
+		actorName.addItemListener(this);
+		birthYear.addItemListener(this);
+		
 		movieNameField.setEnabled(false);
 		releasedDateField.setEnabled(false);
 		movieNameButton.setEnabled(false);
-		releasedDateButton.setEnabled(false);		
+		releasedDateButton.setEnabled(false);	
+		
+		actorNameField.setEnabled(false);
+		birthYearField.setEnabled(false);
+		actorNameButton.setEnabled(false);
+		birthYearButton.setEnabled(false);	
 		
 		
 		
@@ -168,10 +230,19 @@ public class MovieInfo extends JFrame implements ItemListener {
         comboBox = new JComboBox();
         comboBox.setBounds(300, 8, 70, 20);
         crudPanel.add(comboBox);
+        
+        comboBox2 = new JComboBox();
+        comboBox2.setBounds(300, 8, 70, 20);
+        crudPanel2.add(comboBox2);
+        
 //        comboBox.addItem("선택");
         comboBox.addItem("생성");
         comboBox.addItem("수정");
         comboBox.addItem("삭제");
+        
+        comboBox2.addItem("생성");
+        comboBox2.addItem("수정");
+        comboBox2.addItem("삭제");
 
         confirmBotton.addActionListener(new ActionListener() {
 			

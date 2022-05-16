@@ -13,14 +13,19 @@ import javax.swing.table.TableColumnModel;
 
 public class ReviewList extends JFrame{
 
+	ReviewDao dao;
+	
 	private JPanel jPanel;
 	private JTable table;
 	private DefaultTableModel model;
 	private JScrollPane scrollPane;
 	
-	String schema[] = {"번호", "닉네임", "영화번호", "영화이름", "개봉일", "관객수", "평점", "리뷰"};
+	String schema[] = {"닉네임", "영화번호", "영화이름", "평점", "리뷰"};
 	
 	public ReviewList() {
+		
+		dao = new ReviewDao();
+		
 		setTitle("영화시청자 평점 리스트");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setSize(500,500);
@@ -47,9 +52,21 @@ public class ReviewList extends JFrame{
 		jPanel.add(scrollPane);
 		
 		add(jPanel, FlowLayout.LEFT);
+		
+		selectAll();
+	}
+
+	// 리뷰번호는 잘 들어옴
+	private void selectAll() {
+		for (int i = 0; i < dao.selectAll().size(); i++) {
+			model.addRow(new Object[] { i + 1, dao.selectAll().get(i).getNickname(),
+					dao.selectAll().get(i).getMovieNumber(), dao.selectAll().get(i).getMovieName(),
+					dao.selectAll().get(i).getReleasedDate(), dao.selectAll().get(i).getAudience(),
+					dao.selectAll().get(i).getStarRating(), dao.selectAll().get(i).getReview() });
+		}
 	}
 	
-//	public static void main(String[] args) {
-//		new ReviewList();
-//	}
+	public static void main(String[] args) {
+		new ReviewList();
+	}
 }
